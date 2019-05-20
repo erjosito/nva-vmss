@@ -15,11 +15,11 @@
             "type": "int"
         },
         "vmName": {
-            "defaultValue": "[concat('nva',uniqueString(resourceGroup().id))]",
+            "defaultValue": "nva",
             "type": "string"
         },
         "vmssName": {
-            "defaultValue": "[concat('nvaVMSS',uniqueString(resourceGroup().id))]",
+            "defaultValue": "nvaVMSS",
             "type": "string"
         },
         "scaleSettingsName": {
