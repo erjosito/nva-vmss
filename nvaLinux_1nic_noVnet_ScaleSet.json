@@ -231,10 +231,10 @@
                                                 },
                                                 "loadBalancerBackendAddressPools": [
                                                     {
-                                                        "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('slbintName'), '/backendAddressPools/', variables('slbintBackendName')))]"
+                                                        "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('slbintName')), '/backendAddressPools/', variables('slbintBackendName'))]"
                                                     },
                                                     {
-                                                        "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('slbextName'), '/backendAddressPools/', variables('slbextBackendName')))]"
+                                                        "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('slbextName')), '/backendAddressPools/', variables('slbextBackendName'))]"
                                                     }
                                                 ]
                                             }
