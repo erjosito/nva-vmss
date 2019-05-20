@@ -54,7 +54,8 @@
         }
     },
     "variables": {
-        "networkApiVersion": "2017-08-01",
+        "networkApiVersion": "2018-11-01",
+        "computeApiVersion": "2018-06-01",
         "scriptUri": "[uri(deployment().properties.templateLink.uri, parameters('scriptName'))]",
         "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
         "subnetId": "[concat(variables('vnetID'), '/subnets/', parameters('subnetName'))]",
@@ -303,7 +304,7 @@
         {
             "comments": "Create the autoscale settings for the VM scale set",
             "type": "Microsoft.Insights/autoscaleSettings",
-            "apiVersion": "2017-12-01",
+            "apiVersion": "[variables('computeApiVersion')]",
             "name": "[parameters('scaleSettingsName')]",
             "location": "[resourceGroup().location]",
             "dependsOn": [
