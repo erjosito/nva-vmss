@@ -168,7 +168,7 @@
             "comments": "External Load Balancer",
             "type": "Microsoft.Network/loadBalancers",
             "name": "[variables('slbextName')]",
-            "apiVersion": "2016-03-30",
+            "apiVersion": "[variables('networkApiVersion')]",
             "location": "[resourceGroup().location]",
             "sku": {
                 "name": "Standard"
