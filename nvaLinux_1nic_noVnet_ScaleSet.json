@@ -43,10 +43,6 @@
             "defaultValue": null,
             "type": "securestring"
         },
-        "pipName": {
-            "defaultValue": "nva-publicIP",
-            "type": "string"
-        },
         "scriptName": {
             "defaultValue": "linuxNVAconfig-1nic.sh",
             "type": "string",
@@ -71,12 +67,12 @@
         "slbintBackendName": "[concat(parameters('vmName'), '-slbintBackend')]",
         "slbintFrontendName": "[concat(parameters('vmName'), '-slbintBackend')]",
         "slbintRulename": "haports",
-        "slbintProbeName": "healthcheck",
+        "slbintProbeName": "healthCheck",
         "slbintProbePort": 22,
         "slbextName": "[concat(parameters('vmName'), '-slbext')]",
         "slbextBackendName": "[concat(parameters('vmName'), '-slbextBackend')]",
         "slbextFrontendName": "[concat(parameters('vmName'), '-slbextBackend')]",
-        "slbextProbeName": "healthcheck",
+        "slbextProbeName": "healthCheck",
         "slbextProbePort": 22,
         "slbextPipName": "[concat(parameters('vmName'), '-slbPip')]"
     },
@@ -152,7 +148,7 @@
             "comments": "Public IP address",
             "type": "Microsoft.Network/publicIPAddresses",
             "apiVersion": "[variables('networkApiVersion')]",
-            "name": "[variables('slbextPipname')]",
+            "name": "[variables('slbextPipName')]",
             "sku": {
                 "name": "Standard",
                 "tier": "Regional"
@@ -181,7 +177,7 @@
                         "properties": {
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIpAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('pipName'))]"
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('slbextPipName'))]"
                             }
                         }
                     }
@@ -209,7 +205,7 @@
             },
             "resources": [],
             "dependsOn": [
-                "[variables('slbextPipname')]"
+                "[variables('slbextPipName')]"
             ]
         },
         {
