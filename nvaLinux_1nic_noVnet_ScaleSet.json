@@ -95,26 +95,6 @@
                     }
                 ],
                 "loadBalancingRules": [
-                    {
-                        "name": "[variables('slbintRulename')]",
-                        "properties": {
-                            "frontendIPConfiguration": {
-                                "id": "[concat( resourceId('Microsoft.Network/loadBalancers', variables('slbintName')), '/frontendIPConfigurations/', variables('slbintFrontendName'))]"
-                            },
-                            "frontendPort": 0,
-                            "backendPort": 0,
-                            "enableFloatingIP": false,
-                            "idleTimeoutInMinutes": 4,
-                            "protocol": "Tcp",
-                            "loadDistribution": "Default",
-                            "backendAddressPool": {
-                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('slbintName')), '/backendAddressPools/', variables('slbintBackendName'))]"
-                            },
-                            "probe": {
-                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('slbintName')), '/probes/', variables('slbintProbeName'))]"
-                            }
-                        }
-                    }
                 ],
                 "probes": [
                     {
