@@ -55,17 +55,17 @@
         "scaleSettingCPUThresholdRising": 50.0,
         "scaleSettingCPUThresholdFalling": 30.0,
         "slbintName": "[concat(parameters('vmName'), '-slbint')]",
-        "slbintBackendName": "[concat(parameters('vmName'), '-slbintBackend')]",
-        "slbintFrontendName": "[concat(parameters('vmName'), '-slbintBackend')]",
+        "slbintBackendName": "slbintBackend",
+        "slbintFrontendName": "slbintFrontend",
         "slbintRulename": "haports",
         "slbintProbeName": "healthCheck",
         "slbintProbePort": 22,
         "slbextName": "[concat(parameters('vmName'), '-slbext')]",
-        "slbextBackendName": "[concat(parameters('vmName'), '-slbextBackend')]",
-        "slbextFrontendName": "[concat(parameters('vmName'), '-slbextBackend')]",
+        "slbextBackendName": "slbextBackend",
+        "slbextFrontendName": "slbextFrontend",
         "slbextProbeName": "healthCheck",
         "slbextProbePort": 22,
-        "slbextPipName": "[concat(parameters('vmName'), '-slbPip')]"
+        "slbextPipName": "slbextPip"
     },
     "resources": [
         {
