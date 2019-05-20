@@ -70,13 +70,13 @@
         "slbintBackendName": "[concat(parameters('vmName'), '-slbintBackend')]",
         "slbintFrontendName": "[concat(parameters('vmName'), '-slbintBackend')]",
         "slbintRulename": "haports",
-        "slbintProbename": "healthcheck",
-        "slbintProbeport": 22,
+        "slbintProbeName": "healthcheck",
+        "slbintProbePort": 22,
         "slbextName": "[concat(parameters('vmName'), '-slbext')]",
         "slbextBackendName": "[concat(parameters('vmName'), '-slbextBackend')]",
         "slbextFrontendName": "[concat(parameters('vmName'), '-slbextBackend')]",
-        "slbextProbename": "healthcheck",
-        "slbextProbeport": 22,
+        "slbextProbeName": "healthcheck",
+        "slbextProbePort": 22,
         "slbextPipName": "[concat(parameters('vmName'), '-slbPip')]"
     },
     "resources": [
@@ -113,8 +113,8 @@
                             "frontendIPConfiguration": {
                                 "id": "[concat( resourceId('Microsoft.Network/loadBalancers', variables('slbintName')), '/frontendIPConfigurations/', variables('slbintFrontendName'))]"
                             },
-                            "frontendPort": "0",
-                            "backendPort": "0",
+                            "frontendPort": 0,
+                            "backendPort": 0,
                             "enableFloatingIP": false,
                             "idleTimeoutInMinutes": 4,
                             "protocol": "Tcp",
@@ -123,7 +123,7 @@
                                 "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('slbintBackendName')), '/backendAddressPools/', variables('slbintBackendName'))]"
                             },
                             "probe": {
-                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('slbintName')), '/probes/', variables('slbintProbename'))]"
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('slbintName')), '/probes/', variables('slbintProbeName'))]"
                             }
                         }
                     }
@@ -133,7 +133,7 @@
                         "name": "[variables('slbintProbeName')]",
                         "properties": {
                             "protocol": "Tcp",
-                            "port": "[variables('slbintProbeport')]",
+                            "port": "[variables('slbintProbePort')]",
                             "intervalInSeconds": 15,
                             "numberOfProbes": 2
                         }
@@ -193,10 +193,10 @@
                 "loadBalancingRules": [],
                 "probes": [
                     {
-                        "name": "[variables('slbextProbename')]",
+                        "name": "[variables('slbextProbeName')]",
                         "properties": {
                             "protocol": "Tcp",
-                            "port": "[variables('slbextProbeport')]",
+                            "port": "[variables('slbextProbePort')]",
                             "intervalInSeconds": 15,
                             "numberOfProbes": 2
                         }
