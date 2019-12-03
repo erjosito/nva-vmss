@@ -1,7 +1,7 @@
 # Initialization
 rg=nvavmss
 location=westeurope
-vnet=cybotvnet
+vnet=vnet
 vnetprefix=192.168.0.0/16
 nvasubnet=nva
 nvasubnetprefix=192.168.1.0/24
