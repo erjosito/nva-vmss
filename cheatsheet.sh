@@ -88,7 +88,7 @@ then
 fi
 
 # Configure NVA external LB (inbound rule for SSH). No difference between basic and standard SKUs
-az network lb inbound-nat-pool create -g $rg --lb-name $extlb -n inboundSSH --protocol All --frontend-port-range-start 22000 --frontend-port-range-end 22009 --backend-port 22 --frontend-ip-name $extfrontend
+az network lb inbound-nat-pool create -g $rg --lb-name $extlb -n inboundSSH --protocol Tcp --frontend-port-range-start 22000 --frontend-port-range-end 22009 --backend-port 22 --frontend-ip-name $extfrontend
 extpoolid=$(az network lb inbound-nat-pool list -g $rg --lb-name $extlb --query '[0].id' -o tsv)
 az vmss update -g $rg -n $vmssname --set virtualMachineProfile.networkProfile.networkInterfaceConfigurations[0].ipConfigurations[0].loadBalancerInboundNatPools="[{\"id\":\"$extpoolid\",\"resourceGroup\": \"$rg\"}]"
 az vmss update-instances -g $rg --name $vmssname --instance-ids "*"
@@ -100,7 +100,7 @@ intbackend=$(az network lb address-pool list -g $rg --lb-name $intlb --query '[0
 intprobe=$(az network lb probe list -g $rg --lb-name $intlb --query '[0].name' -o tsv)
 if [[ "$lbsku" == "standard" ]]
 then
-    az network lb rule create -n AllPorts -g $rg --lb-name $intlb --protocol Tcp --frontend-port 0 --backend-port 0 --frontend-ip-name $intfrontend --backend-pool-name $intbackend --probe-name $intprobe
+    az network lb rule create -n AllPorts -g $rg --lb-name $intlb --protocol * --frontend-port 0 --backend-port 0 --frontend-ip-name $intfrontend --backend-pool-name $intbackend --probe-name $intprobe
 else
     az network lb rule create -n HTTP -g $rg --lb-name $intlb --protocol Tcp --frontend-port 80 --backend-port 80 --frontend-ip-name $intfrontend --backend-pool-name $intbackend --probe-name $intprobe
     az network lb rule create -n HTTPS -g $rg --lb-name $intlb --protocol Tcp --frontend-port 443 --backend-port 443 --frontend-ip-name $intfrontend --backend-pool-name $intbackend --probe-name $intprobe
