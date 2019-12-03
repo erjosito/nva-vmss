@@ -80,7 +80,7 @@ else
     az network lb rule create -n haports -g $rg --lb-name $extlb --protocol Tcp --frontend-port 999 --backend-port 999 --frontend-ip-name $extfrontend --backend-pool-name $extbackend --probe-name $extprobe
 fi
 extbackendid=$(az network lb address-pool list -g $rg --lb-name $extlb --query '[0].id' -o tsv)
-az vmss update -g $rg -n $vmssname --set virtualMachineProfile.networkProfile.networkInterfaceConfigurations[0].ipConfigurations[0].loadBalancerBackendAddressPools="[{\"id\":\"$extbackendid\"}]"
+az vmss update -g $rg -n $vmssname --set virtualMachineProfile.networkProfile.networkInterfaceConfigurations\[0\].ipConfigurations\[0\].loadBalancerBackendAddressPools="[{\"id\":\"$extbackendid\"}]"
 az vmss update-instances -g $rg --name $vmssname --instance-ids "*"
 if [[ "$lbsku" == "standard" ]]
 then
@@ -90,7 +90,7 @@ fi
 # Configure NVA external LB (inbound rule for SSH). No difference between basic and standard SKUs
 az network lb inbound-nat-pool create -g $rg --lb-name $extlb -n inboundSSH --protocol Tcp --frontend-port-range-start 22000 --frontend-port-range-end 22009 --backend-port 22 --frontend-ip-name $extfrontend
 extpoolid=$(az network lb inbound-nat-pool list -g $rg --lb-name $extlb --query '[0].id' -o tsv)
-az vmss update -g $rg -n $vmssname --set virtualMachineProfile.networkProfile.networkInterfaceConfigurations[0].ipConfigurations[0].loadBalancerInboundNatPools="[{\"id\":\"$extpoolid\",\"resourceGroup\": \"$rg\"}]"
+az vmss update -g $rg -n $vmssname --set virtualMachineProfile.networkProfile.networkInterfaceConfigurations\[0\].ipConfigurations\[0\].loadBalancerInboundNatPools="[{\"id\":\"$extpoolid\",\"resourceGroup\": \"$rg\"}]"
 az vmss update-instances -g $rg --name $vmssname --instance-ids "*"
 az network lb inbound-nat-rule list -g $rg --lb-name $extlb -o table
 
@@ -109,25 +109,25 @@ az network lb rule list -g $rg --lb-name $intlb -o table
 # Don't forget to include the previously configured backend pool for the ext LB
 extbackendid=$(az network lb address-pool list -g $rg --lb-name $extlb --query '[0].id' -o tsv)
 intbackendid=$(az network lb address-pool list -g $rg --lb-name $intlb --query '[0].id' -o tsv)
-az vmss update -g $rg -n $vmssname --set virtualMachineProfile.networkProfile.networkInterfaceConfigurations[0].ipConfigurations[0].loadBalancerBackendAddressPools="[{\"id\":\"$extbackendid\"},{\"id\":\"$intbackendid\"}]"
+az vmss update -g $rg -n $vmssname --set virtualMachineProfile.networkProfile.networkInterfaceConfigurations\[0\].ipConfigurations\[0\].loadBalancerBackendAddressPools="[{\"id\":\"$extbackendid\"},{\"id\":\"$intbackendid\"}]"
 az vmss update-instances -g $rg --name $vmssname --instance-ids "*"
 
 # Enable IP forwarding in Azure for the NVAs
-az vmss update -g $rg -n $vmssname --set virtualMachineProfile.networkProfile.networkInterfaceConfigurations[0].enableIpForwarding="true"
+az vmss update -g $rg -n $vmssname --set virtualMachineProfile.networkProfile.networkInterfaceConfigurations\[0\].enableIpForwarding="true"
 az vmss update-instances -g $rg --name $vmssname --instance-ids "*"
 
 # Troubleshooting/verifying VMSS network config
 # VMSS model:
-az vmss show -n $vmssname -g $rg --query virtualMachineProfile.networkProfile.networkInterfaceConfigurations[0].ipConfigurations[0]
+az vmss show -n $vmssname -g $rg --query virtualMachineProfile.networkProfile.networkInterfaceConfigurations\[0\].ipConfigurations[0]
 # Instance model (after running update-instances the vmss model is propagated to the instance model):
 # Take the first instance ID
 instanceid=$(az vmss list-instances -g $rg -n $vmssname --query '[0].instanceId' -o tsv)
 # LB pools
-az vmss show -g $rg -n $vmssname --instance-id $instanceid --query networkProfileConfiguration.networkInterfaceConfigurations[0].ipConfigurations[0]
+az vmss show -g $rg -n $vmssname --instance-id $instanceid --query networkProfileConfiguration.networkInterfaceConfigurations\[0\].ipConfigurations[0]
 # IP forwarding:
-az vmss show -g $rg -n $vmssname --instance-id $instanceid --query networkProfileConfiguration.networkInterfaceConfigurations[0].enableIpForwarding
+az vmss show -g $rg -n $vmssname --instance-id $instanceid --query networkProfileConfiguration.networkInterfaceConfigurations\[0\].enableIpForwarding
 # NSG (note allowing the traffic in the NSG is critical if using a standard LB)
-az vmss show -g $rg -n $vmssname --instance-id $instanceid --query networkProfileConfiguration.networkInterfaceConfigurations[0].networkSecurityGroup
+az vmss show -g $rg -n $vmssname --instance-id $instanceid --query networkProfileConfiguration.networkInterfaceConfigurations\[0\].networkSecurityGroup
 
 # Default route to int LB VIP from the batch subnet
 rt=batchrt
@@ -138,7 +138,7 @@ nexthop=$(az network lb frontend-ip list -g $rg --lb-name $intlb --query [0].pri
 az network route-table create -g $rg -n $rt -l westeurope
 az network route-table route create -g $rg --route-table-name $rt -n default --next-hop-type VirtualAppliance --address-prefix 0.0.0.0/0 --next-hop-ip-address $nexthop
 az network vnet subnet update -g $rg --vnet-name $vnet -n $batchsubnet --route-table $rt
-az vmss show -g $rg -n $vmssname --instance-id 0 --query networkProfileConfiguration.networkInterfaceConfigurations[0].enableIpForwarding
+az vmss show -g $rg -n $vmssname --instance-id 0 --query networkProfileConfiguration.networkInterfaceConfigurations\[0\].enableIpForwarding
 
 # Route to Azure Batch mgmt nodes
 url1=https://www.microsoft.com/en-us/download/confirmation.aspx?id=56519
