@@ -1,5 +1,5 @@
 # Initialization
-rg=cybot
+rg=nvavmss
 location=westeurope
 vnet=cybotvnet
 vnetprefix=192.168.0.0/16
@@ -40,7 +40,7 @@ fi
 az network lb probe create -g $rg --lb-name $extlb -n $extlb-probe --protocol tcp --port 22
 # Internal LB
 az network lb create -g $rg -n $intlb --sku $lbsku --vnet-name $vnet --subnet $nvasubnet
-intbackend=$(az network lb address-pool list -g $rg --lb-name $extlb --query [0].name -o tsv)
+intbackend=$(az network lb address-pool list -g $rg --lb-name $intlb --query [0].name -o tsv)
 if [[ -z "$intbackend" ]]
 then
     az network lb address-pool create -g $rg --lb-name $intlb -n $intlb-backend
